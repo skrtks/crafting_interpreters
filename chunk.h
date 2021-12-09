@@ -7,6 +7,7 @@
 
 #include "common.h"
 #include "memory.h"
+#include "value.h"
 
 typedef enum {
 	OP_RETURN
@@ -16,10 +17,12 @@ typedef struct {
 	int count;
 	int capacity;
 	uint8_t *code;
+	ValueArray constants;
 } Chunk;
 
 void initChunk(Chunk* chunk);
 void writeChunk(Chunk* chunk, uint8_t byte);
+int addConstant(Chunk* chunk, Value value);
 void freeChunk(Chunk* chunk);
 
 #endif //CHUNK_H
