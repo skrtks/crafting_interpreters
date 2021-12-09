@@ -10,6 +10,7 @@
 int simpleInstruction(const char* name, int offset);
 int constantInstruction(const char* name, Chunk* chunk, int offset);
 void printValue(Value value);
+Line getLine(const Chunk* chunk);
 
 void disassembleChunk(Chunk* chunk, const char* name) {
 	printf("== %s ==\n", name);
@@ -34,6 +35,14 @@ int constantInstruction(const char* name, Chunk* chunk, int offset) {
 
 int disassembleInstruction(Chunk* chunk, int offset) {
 	printf("%04d ", offset);
+
+	int lineNumber = getLineNumber(&chunk->lines, offset);
+	if (offset > 0 && lineNumber == getLineNumber(&chunk->lines, offset - 1)) {
+		printf("   | ");
+	}
+	else {
+		printf("%4d ", lineNumber);
+	}
 
 	uint8_t instruction = chunk->code[offset];
 	switch (instruction) {
