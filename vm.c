@@ -8,6 +8,7 @@
 #include <printf.h>
 #include "common.h"
 #include "vm.h"
+#include "compiler.h"
 
 VM vm;
 

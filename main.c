@@ -5,7 +5,6 @@ void repl();
 void runFile(const char* path);
 char* readFile(const char* path);
 
-// todo: left of at 16.1.1
 int main(int argc, const char** argv) {
 	initVM();
 
