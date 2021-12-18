@@ -22,7 +22,7 @@ void initLinesArray(LinesArray* array);
 void writeLinesArray(LinesArray* array, int line);
 void freeLinesArray(LinesArray* array);
 
-int getLineNumber(const LinesArray* array, const int chunkOffset);
+int getLineNumber(const LinesArray* array, size_t chunkOffset);
 
 void printLine(int value);
 

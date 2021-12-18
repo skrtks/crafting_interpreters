@@ -38,7 +38,7 @@ void printLine(int value) {
 	printf("%i", value);
 }
 
-int getLineNumber(const LinesArray* array, const int chunkOffset) {
+int getLineNumber(const LinesArray* array, const size_t chunkOffset) {
 	int rangeStart;
 	int rangeEnd = 0;
 	for (int i = 0; i < array->count; ++i) {
