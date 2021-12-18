@@ -56,11 +56,15 @@ static Value peek(int distance) {
 static InterpretResult run() {
 #define READ_BYTE() (*vm.ip++)
 #define READ_CONSTANT() (vm.chunk->constants.values[READ_BYTE()])
-#define BINARY_OP(op) \
+#define BINARY_OP(valueType, op) \
 	do { \
-    	double b = pop(); \
-    	double a = pop(); \
-    	push(a op b); \
+      if (!IS_NUMBER(peek(0)) || !IS_NUMBER(peek(1))) { \
+        runtimeError("Operands must be numbers."); \
+        return INTERPRET_RUNTIME_ERROR; \
+      } \
+      double b = AS_NUMBER(pop()); \
+      double a = AS_NUMBER(pop()); \
+      push(valueType(a op b)); \
 	} while (false)
 
 	for (;;) {
@@ -80,10 +84,10 @@ static InterpretResult run() {
 				printValue(pop());
 				printf("\n");
 				return INTERPRET_OK;
-			case OP_ADD: BINARY_OP(+); break;
-			case OP_SUBTRACT: BINARY_OP(-); break;
-			case OP_MULTIPLY: BINARY_OP(*); break;
-			case OP_DIVIDE: BINARY_OP(/); break;
+			case OP_ADD: BINARY_OP(NUMBER_VAL, +); break;
+			case OP_SUBTRACT: BINARY_OP(NUMBER_VAL, -); break;
+			case OP_MULTIPLY: BINARY_OP(NUMBER_VAL, *); break;
+			case OP_DIVIDE: BINARY_OP(NUMBER_VAL, /); break;
 			case OP_NEGATE:
 				if (!IS_NUMBER(peek(0))) {
 					runtimeError("Operand must be number.");
@@ -96,6 +100,12 @@ static InterpretResult run() {
 				push(constant);
 				break;
 			}
+			case OP_NIL:
+				push(NIL_VAL); break;
+			case OP_FALSE:
+				push(BOOL_VAL(false)); break;
+			case OP_TRUE:
+				push(BOOL_VAL(true)); break;
 		}
 	}
 

@@ -161,6 +161,8 @@ static TokenType identifierType() {
 			return checkKeyword(1, 5, "eturn", TOKEN_RETURN);
 		case 's':
 			return checkKeyword(1, 4, "uper", TOKEN_SUPER);
+		case 't':
+			return checkKeyword(1, 3, "rue", TOKEN_TRUE);
 		case 'v':
 			return checkKeyword(1, 2, "ar", TOKEN_VAR);
 		case 'w':
