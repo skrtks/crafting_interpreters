@@ -7,11 +7,6 @@
 #include "debug.h"
 #include "value.h"
 
-int simpleInstruction(const char* name, int offset);
-int constantInstruction(const char* name, Chunk* chunk, int offset);
-void printValue(Value value);
-Line getLine(const Chunk* chunk);
-
 void disassembleChunk(Chunk* chunk, const char* name) {
 	printf("== %s ==\n", name);
 
