@@ -2,7 +2,6 @@
 // Created by Sam Kortekaas on 12/15/21.
 //
 
-#include <stdio.h>
 #include <string.h>
 
 #include "common.h"
@@ -130,7 +129,7 @@ static Token number() {
 static bool isAlpha(char c) {
 	return (c >= 'a' && c <= 'z')
 		   || (c >= 'A' && c <= 'Z')
-		   || c == '-';
+		   || c == '_';
 }
 
 static TokenType checkKeyword(int start, int length, const char* rest, TokenType type) {
@@ -191,7 +190,7 @@ static Token identifier() {
 }
 
 Token scanToken() {
-
+	skipWhitespace();
 	scanner.start = scanner.current;
 
 	if (isAtEnd())

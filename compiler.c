@@ -8,6 +8,7 @@
 #include "common.h"
 #include "compiler.h"
 #include "scanner.h"
+#include "debug.h"
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wformat-extra-args"
@@ -63,7 +64,7 @@ static void errorAt(Token* token, const char* message) {
 		fprintf(stderr, " at '%.*s'", token->length, token->start);
 	}
 
-	fprintf(stderr, ": &s\n", message);
+	fprintf(stderr, ": %s\n", message);
 	parser.hadError = true;
 }
 
@@ -133,10 +134,21 @@ static void parsePrecedence(Precedence precedence) {
 	}
 
 	prefixRule();
+
+	while (precedence <= getRule(parser.current.type)->precedence) {
+		advance();
+		ParseFn infixRule = getRule(parser.previous.type)->infix;
+		infixRule();
+	}
 }
 
 void endCompiler() {
 	emitReturn();
+#ifdef DEBUG_PRINT_CODE
+	if (!parser.hadError) {
+		disassembleChunk(currentChunk(), "code");
+	}
+#endif
 }
 
 static void binary() {
@@ -178,7 +190,7 @@ static void number() {
 }
 
 static void unary() {
-	TokenType type = parser.current.type;
+	TokenType type = parser.previous.type;
 
 	parsePrecedence(PREC_UNARY);
 
