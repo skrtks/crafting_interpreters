@@ -12,6 +12,16 @@ void initValueArray(ValueArray* array) {
 	array->count = 0;
 }
 
+bool valuesEqual(Value value1, Value value2) {
+	if (value1.type != value2.type) return false;
+	switch(value1.type) {
+		case VAL_BOOL: return AS_BOOL(value1) == AS_BOOL(value2);
+		case VAL_NIL: return true;
+		case VAL_NUMBER: return AS_NUMBER(value1) == AS_NUMBER(value2);
+		default: return false;
+	}
+}
+
 void writeValueArray(ValueArray* array, Value value) {
 	if (array->capacity < array->count + 1) {
 		int oldCapacity = array->capacity;
